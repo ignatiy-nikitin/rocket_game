@@ -6,6 +6,9 @@ from drf_yasg import openapi
 from rest_framework import permissions
 
 
+from rocket_game import settings
+from django.conf.urls.static import static
+
 schema_view = get_schema_view(
     openapi.Info(
         title='ROCKET GAME API',
@@ -26,3 +29,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include(urlpatterns_api_v1)),
 ]
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
