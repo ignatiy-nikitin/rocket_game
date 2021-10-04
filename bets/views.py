@@ -48,13 +48,18 @@ class BetViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixin, mixins.List
 
 
     '''
-    serializer_class = BetSerializer
+    # serializer_class = BetSerializer
     queryset = Bet.objects.all()
     filter_backends = [DjangoFilterBackend]
     # filterset_fields = ['player__id']
 
+    def get_serializer_class(self):
+        if action in ('win', 'loose'):
+            return None
+        return BetSerializer
 
-    @action(detail=True, methods=['get'])
+
+    @action(detail=True, methods=['post'])
     def win(self, request, pk=None):
         bet = self.get_object()
         if bet.status != Bet.StatusChoices.ACTIVE:
@@ -67,7 +72,7 @@ class BetViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixin, mixins.List
         bet.player.save()
         return Response(self.get_serializer(bet).data)
 
-    @action(detail=True, methods=['get'])
+    @action(detail=True, methods=['post'])
     def loose(self, request, pk=None):
         bet = self.get_object()
         if bet.status != Bet.StatusChoices.ACTIVE:
