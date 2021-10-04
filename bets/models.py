@@ -1,3 +1,4 @@
+from enum import auto
 from django.db import models
 
 from players.models import Player
@@ -13,3 +14,4 @@ class Bet(models.Model):
     factor = models.PositiveIntegerField(verbose_name='множитель')
     status = models.CharField(max_length=32, choices=StatusChoices.choices, default=StatusChoices.ACTIVE,
                               verbose_name='статус')
+    creation_datetime = models.DateTimeField(auto_now_add=True, verbose_name='дата и время создания')

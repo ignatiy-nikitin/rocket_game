@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'drf_yasg',
+    'django_filters',
 
     'players',
     'providers',
@@ -150,6 +151,10 @@ SWAGGER_SETTINGS = {
 }
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}
 
 
 BETS_MAX_NUMBER = 2  # кол-во максимальных ставок у игрока

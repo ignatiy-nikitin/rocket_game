@@ -6,6 +6,7 @@ from django.urls import path
 bet_router = DefaultRouter()
 bet_router.register('', BetViewSet, basename='bet')
 
+
 urlpatterns = bet_router.urls
 
 

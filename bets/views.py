@@ -14,10 +14,17 @@ from decimal import Decimal
 # from rest_framework.generics import GenericAPIView
 from rest_framework import mixins 
 
+from django_filters.rest_framework import DjangoFilterBackend
+
 
 # Create your views here.
-class BetViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet):
+class BetViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     '''
+    list:
+        Получить список ставок
+
+        -
+
     create:
         Сделать ставку
 
@@ -39,9 +46,13 @@ class BetViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixin, viewsets.Ge
 
         -
 
+
     '''
     serializer_class = BetSerializer
     queryset = Bet.objects.all()
+    filter_backends = [DjangoFilterBackend]
+    # filterset_fields = ['player__id']
+
 
     @action(detail=True, methods=['get'])
     def win(self, request, pk=None):

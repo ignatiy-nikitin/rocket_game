@@ -9,7 +9,7 @@ from rocket_game.settings import BETS_MAX_NUMBER
 class BetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bet
-        fields = ['id', 'player', 'amount', 'factor', 'status']
+        fields = ['id', 'player', 'amount', 'factor', 'status', 'creation_datetime']
 
     def create(self, validated_data):
         validated_data['player'].active_bets += 1
