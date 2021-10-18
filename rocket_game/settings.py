@@ -40,10 +40,16 @@ INSTALLED_APPS = [
 
     'drf_yasg',
     'django_filters',
+    'rest_framework.authtoken',
 
+    'rocket_game',
     'players',
     'providers',
-    'bets'
+    'bets',
+    'merchants',
+    'games',
+    'deposits',
+    'withdraws'
 ]
 
 MIDDLEWARE = [
@@ -153,8 +159,13 @@ SWAGGER_SETTINGS = {
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
 
 BETS_MAX_NUMBER = 2  # кол-во максимальных ставок у игрока
+
+AUTH_USER_MODEL = 'merchants.Merchant'
