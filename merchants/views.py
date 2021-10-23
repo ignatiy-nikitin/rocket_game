@@ -13,7 +13,7 @@ from players.serializers import PlayerSerializer
 
 from rest_framework.decorators import action, api_view
 
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 
 
 from rest_framework import mixins
@@ -23,6 +23,22 @@ from bets.models import Bet
 from rest_framework.views import APIView
 
 from rest_framework import generics, status
+
+class MerchantViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
+    """
+    list:
+        Получить список партнеров системы (только для админа)
+
+        -
+
+    read:
+        Получить партнера по id (только для админа)
+
+        -
+    """
+    serializer_class = MerchantSerializer
+    permission_classes = [IsAuthenticated, IsAdminUser]
+    queryset = Merchant.objects.all()
 
 
 class MerchantCreateUpdateViewSet(mixins.CreateModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
@@ -58,6 +74,12 @@ class MerchantAuthView(APIView):
 
 
 class MerchantCreateAPIView(APIView):
+    """
+    post:
+        Добавить партнера в систему
+
+        -
+    """
     permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):

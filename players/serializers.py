@@ -12,7 +12,7 @@ from games.models import Game
 class PlayerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Player
-        fields = ['id', 'nickname', 'merchant', 'id_ms']
+        fields = ['id', 'merchant', 'id_ms']
 
     def create(self, validated_data):
         if Player.objects.filter(token=validated_data['token']).exists():

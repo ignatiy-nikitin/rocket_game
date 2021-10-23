@@ -37,9 +37,24 @@ from withdraws.models import Withdraw
 
 
 class WithdrawViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
+    """
+    list:
+        Получить информацию о снятиях игроков партнера (для админа - статистика всех игроков)
+
+        -
+
+    read:
+        Получить информацию о снятии игрока партнера по id (для админа - статистика всех игроков)
+
+        -
+    """
     serializer_class = DepositSerializer
     permission_classes = [IsAuthenticated]
-    queryset = Withdraw.objects.all()
+
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            return Withdraw.objects.all()
+        return Withdraw.objects.filter(player__merchant=self.request.user)
 
 
 class WithdrawAPIView(APIView):
@@ -66,33 +81,3 @@ class WithdrawAPIView(APIView):
             return Response({'balance': 100})
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-# @api_view(http_method_names=['POST'])
-# def withdraw_view(request, *args, **kwargs):
-#     """
-#     post:
-#         Депозит
-
-#         -
-#     """
-#     serializer = WithdrawCreateSerializer(data=request.data)
-#     if serializer.is_valid():
-
-#         player = get_player_by_private_token(serializer.data['player_private_token'])
-
-#         deposit = WithdrawSerializer(data={
-#             'amount': serializer.data['amount'],
-#             'player': player.id,
-#             'currency': serializer.data['currency'],
-#         })
-#         if deposit.is_valid():
-#             deposit.save()
-#         else:
-#             return Response(deposit.errors, status=status.HTTP_400_BAD_REQUEST)
-
-#         # TODO: call merchants API: getPlayerInfo(private_token), return total balance (-= amount)
-
-#         return Response({'balance': 100})
-
-#     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

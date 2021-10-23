@@ -16,7 +16,9 @@ from deposits.serializers import DepositSerializer
 
 from rest_framework.decorators import action, api_view
 
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
+
+from rest_framework import permissions
 
 
 from rest_framework import mixins
@@ -33,9 +35,24 @@ from deposits.models import Deposit
 
 
 class DepositViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
+    """
+    list:
+        Получить информацию о депозитах игроков партнера (для админа - статистика всех игроков)
+
+        -
+
+    read:
+        Получить информацию о депозите игрока партнера по id (для админа - статистика всех игроков)
+
+        -
+    """
     serializer_class = DepositSerializer
     permission_classes = [IsAuthenticated]
-    queryset = Deposit.objects.all()
+
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            return Deposit.objects.all()
+        return Deposit.objects.filter(player__merchant=self.request.user)
 
 
 class DepositCreateAPIView(APIView):

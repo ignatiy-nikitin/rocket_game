@@ -11,8 +11,6 @@ from django.conf.urls.static import static
 
 from rest_framework.authtoken.views import obtain_auth_token
 
-from players.views import bet_view, deposit_view, get_balance_view, withdraw_view
-
 from rest_framework.routers import DefaultRouter, SimpleRouter
 
 schema_view = get_schema_view(
@@ -27,16 +25,24 @@ schema_view = get_schema_view(
 from merchants import views as merchants_views
 from deposits import views as deposits_views
 from withdraws import views as withdraw_views
+from bets import views as bets_views
+from players import views as players_views
+from games import views as game_views
 
 
 local_api_v1 = [
     path('admin/auth/login/', obtain_auth_token),
     path('admin/create_marchant/', merchants_views.MerchantCreateAPIView.as_view()),
+    path('bet/', bets_views.BetAPIView.as_view()),
 ]
 
 router = SimpleRouter()
-router.register('statistics/deposits', deposits_views.DepositViewSet, basename='statistics_deposit')
-router.register('statistics/withdraws', withdraw_views.WithdrawViewSet, basename='statistics_withdraws')
+router.register('backoffice/deposits', deposits_views.DepositViewSet, basename='statistics_deposit')
+router.register('backoffice/withdraws', withdraw_views.WithdrawViewSet, basename='statistics_withdraws')
+router.register('backoffice/bets', withdraw_views.BetViewSet, basename='statistics_bets')
+router.register('backoffice/players', players_views.PlayerViewSet, basename='statistics_players')
+router.register('backoffice/games', game_views.GameViewSet, basename='statistics_games')
+router.register('backoffice/merchants', merchants_views.MerchantViewSet, basename='statistics_merchants')
 local_api_v1 += router.urls
 
 
