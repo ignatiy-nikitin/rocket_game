@@ -24,3 +24,10 @@ class Bet(models.Model):
     game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='bets', verbose_name='игра')
     round = models.IntegerField()
     currency = models.CharField(max_length=256, verbose_name='валюта')
+
+    def __str__(self) -> str:
+        return f'player: {self.player.id}'
+
+    class Meta:
+        verbose_name = 'Ставка'
+        verbose_name_plural = 'Ставки'

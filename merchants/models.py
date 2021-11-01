@@ -12,3 +12,10 @@ class Merchant(AbstractUser):
 
     first_name = None
     last_name = None
+
+    def __str__(self) -> str:
+        return self.name
+
+    class Meta:
+        verbose_name = 'Партнер'
+        verbose_name_plural = 'Партнеры'

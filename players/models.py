@@ -14,3 +14,10 @@ class Player(models.Model):
     # provider = models.ForeignKey(Provider, on_delete=models.CASCADE, related_name='users', verbose_name='провайдер')
     # balance = models.DecimalField(max_digits=12, decimal_places=2, default=0, verbose_name='баланс')  # синхронизация с балансом провайдера?
     # active_bets = models.PositiveIntegerField(default=0, verbose_name='количество активных ставок')
+
+    def __str__(self) -> str:
+        return f'ID в системе партнера: {self.id_ms}'
+
+    class Meta:
+        verbose_name = 'Игрок'
+        verbose_name_plural = 'Игроки'
